@@ -4,7 +4,8 @@ class SessionsController < ApplicationController
   def omniauth
     user = User.from_omniauth(request.env['omniauth.auth'])
     if user
-      session['user_id'] = user.id
+      sign_in user
+      # session['user_id'] = user.id
       redirect_to "/secret"
     else
       redirect_to "/login", alert: "Failed login."
@@ -21,7 +22,7 @@ class SessionsController < ApplicationController
   end
 
   def authenticate
-    @user = User.find(session['user_id'])
+    @user = current_user
     redirect_to "/login" unless @user
   end
 end

@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Clearance::User
+
   def self.from_omniauth(auth)
     user = User.find_or_initialize_by(email: auth.info.email)
     if user.new_record?
